@@ -104,7 +104,7 @@ const ProductCard = ({ data }) => {
           />
         </div>
       </div>
-      {open && <ProductCardPopup setOpen={setOpen} data={data} />}
+      <ProductCardPopup setOpen={setOpen} data={data} open={open} />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import styles from "../styles/styles";
 import { ReactComponent as CrossIcon } from "../assets/svgIcons/Cross.svg";
 import { ReactComponent as RightArrowIcon } from "../assets/svgIcons/RightArrow.svg";
 import { faqs } from "../static/data";
+import { AnimatePresence, motion } from "framer-motion";
 
 const FAQPage = () => {
   return (
@@ -49,11 +50,20 @@ const Faqs = () => {
                   <RightArrowIcon className="w-8 h-8" />
                 )}
               </button>
-              {activeTab === index + 1 && (
-                <div className="mt-4 w-full">
-                  <p className="text-base text-gray-500">{faq.answer}</p>
-                </div>
-              )}
+              <AnimatePresence>
+                {activeTab === index + 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: "-5px" }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: "-5px" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="mt-4 w-full">
+                      <p className="text-base text-gray-500">{faq.answer}</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
       </div>

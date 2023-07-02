@@ -1,8 +1,10 @@
 import React from "react";
-import { RxCross1 } from "react-icons/rx";
 import styles from "../../styles/styles";
 import WishlistItem from "../helpers/WishlistItem";
 import { AiOutlineHeart } from "react-icons/ai";
+import { AnimatePresence, motion } from "framer-motion";
+import { CloseButton } from "../ui/Button";
+import Backdrop from "../ui/Backdrop";
 
 const cartsData = [
   {
@@ -22,37 +24,41 @@ const cartsData = [
   },
 ];
 
-const WishlistPopup = ({ setOpenWishlist }) => {
+const WishlistPopup = ({ setOpenWishlist, isOpen }) => {
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-      <div className="fixed top-0 right-0 min-h-full w-[25%] bg-white flex flex-col justify-between shadow-lg">
-        <div>
-          <div className="w-full text-right pt-5 pr-5 ">
-            <RxCross1
-              size={40}
-              className="cursor-pointer inline-block hover:scale-110 hover:text-[red] hover:bg-gray-100 p-2 rounded-full"
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpenWishlist(false);
-              }}
-            />
-          </div>
-          {/* Items length */}
-          <div className={`${styles.normalFlex} p-4`}>
-            <AiOutlineHeart size={25} />
-            <h5 className="pl-2 text-[20px] font-[500]">3 items</h5>
-          </div>
+    <AnimatePresence>
+      {isOpen && (
+        <Backdrop>
+          <motion.div
+            initial={{ opacity: 0, x: "10px" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "10px" }}
+            transition={{ duration: 0.5 }}
+            className="fixed top-0 right-0 min-h-full w-full sm:w-[60vw] 800px:w-[40vw] bg-white flex flex-col justify-between shadow-lg z-20"
+          >
+            <div>
+              <CloseButton
+                setOpen={setOpenWishlist}
+                contClasses={"pt-5 pr-5"}
+              />
+              {/* Items length */}
+              <div className={`${styles.normalFlex} p-4`}>
+                <AiOutlineHeart size={25} />
+                <h5 className="pl-2 text-[20px] font-[500]">3 items</h5>
+              </div>
 
-          {/* Cart items */}
-          <div className="w-full border-t">
-            {cartsData &&
-              cartsData.map((cart, index) => (
-                <WishlistItem key={index} wishItem={cart} />
-              ))}
-          </div>
-        </div>
-      </div>
-    </div>
+              {/* Cart items */}
+              <div className="w-full border-t">
+                {cartsData &&
+                  cartsData.map((cart, index) => (
+                    <WishlistItem key={index} wishItem={cart} />
+                  ))}
+              </div>
+            </div>
+          </motion.div>
+        </Backdrop>
+      )}
+    </AnimatePresence>
   );
 };
 

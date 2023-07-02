@@ -18,8 +18,11 @@ export const userReducer = createReducer(initialState, {
     state.error = action.payload;
     state.isAuthenticated = false;
   },
+  LogoutUser: (state) => {
+    state.isAuthenticated = false;
+    state.user = null;
+  },
   clearErrors: (state) => {
     state.error = null;
   },
 });
-
