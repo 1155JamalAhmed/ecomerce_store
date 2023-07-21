@@ -12,7 +12,7 @@ import Footer from "../components/layout/Footer";
 const HomePage = () => {
   return (
     <div>
-      <Header activeHeading={1} />
+      <Header />
       <Hero />
       <Categories />
       <BestDeals />

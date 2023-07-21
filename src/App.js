@@ -18,6 +18,9 @@ import {
   ProductDetailPage,
   ProfilePage,
   InboxPage,
+  CheckoutPage,
+  CreateShopPage,
+  ShopActivationPage,
 } from "./routes.js";
 
 // ** REDUX
@@ -39,13 +42,19 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:name" element={<ProductDetailPage />} />
-
           <Route path="/best-selling" element={<BestSellingPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SingupPage />} />
-
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoutes isAuthenticated={isAuthenticated}>
+                <CheckoutPage />
+              </ProtectedRoutes>
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -56,9 +65,14 @@ const App = () => {
           />
           <Route path="/inbox" element={<InboxPage />} />
           <Route
-            path="/activation/:activation_token"
+            path="/users/activation/:activation_token"
             element={<ActivationPage />}
           />
+          <Route
+            path="/shops/activation/:activation_token"
+            element={<ShopActivationPage />}
+          />
+          <Route path="/create-shop" element={<CreateShopPage />} />
         </Routes>
 
         <ToastContainer

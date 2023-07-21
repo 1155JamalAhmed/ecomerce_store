@@ -5,6 +5,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { AnimatePresence, motion } from "framer-motion";
 import { CloseButton } from "../ui/Button";
 import Backdrop from "../ui/Backdrop";
+import { createPortal } from "react-dom";
 
 const cartsData = [
   {
@@ -25,40 +26,43 @@ const cartsData = [
 ];
 
 const WishlistPopup = ({ setOpenWishlist, isOpen }) => {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <Backdrop>
-          <motion.div
-            initial={{ opacity: 0, x: "10px" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "10px" }}
-            transition={{ duration: 0.5 }}
-            className="fixed top-0 right-0 min-h-full w-full sm:w-[60vw] 800px:w-[40vw] bg-white flex flex-col justify-between shadow-lg z-20"
-          >
-            <div>
-              <CloseButton
-                setOpen={setOpenWishlist}
-                contClasses={"pt-5 pr-5"}
-              />
-              {/* Items length */}
-              <div className={`${styles.normalFlex} p-4`}>
-                <AiOutlineHeart size={25} />
-                <h5 className="pl-2 text-[20px] font-[500]">3 items</h5>
-              </div>
+  return createPortal(
+    <div className="z-[60] relative">
+      <AnimatePresence>
+        {isOpen && (
+          <Backdrop>
+            <motion.div
+              initial={{ opacity: 0, x: "5%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "5%" }}
+              transition={{ duration: 0.5 }}
+              className="fixed top-0 right-0 min-h-full w-full sm:w-[60vw] 800px:w-[40vw] bg-white flex flex-col justify-between shadow-lg"
+            >
+              <div>
+                <CloseButton
+                  setOpen={setOpenWishlist}
+                  contClasses={"pt-5 pr-5"}
+                />
+                {/* Items length */}
+                <div className={`${styles.normalFlex} p-4`}>
+                  <AiOutlineHeart size={25} />
+                  <h5 className="pl-2 text-[20px] font-[500]">3 items</h5>
+                </div>
 
-              {/* Cart items */}
-              <div className="w-full border-t">
-                {cartsData &&
-                  cartsData.map((cart, index) => (
-                    <WishlistItem key={index} wishItem={cart} />
-                  ))}
+                {/* Cart items */}
+                <div className="w-full border-t">
+                  {cartsData &&
+                    cartsData.map((cart, index) => (
+                      <WishlistItem key={index} wishItem={cart} />
+                    ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
-        </Backdrop>
-      )}
-    </AnimatePresence>
+            </motion.div>
+          </Backdrop>
+        )}
+      </AnimatePresence>
+    </div>,
+    document.getElementById("portal")
   );
 };
 

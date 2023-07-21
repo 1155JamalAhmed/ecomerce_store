@@ -5,7 +5,7 @@ import EventCard from "../components/cards/EventCard";
 const EventsPage = () => {
   return (
     <div>
-      <Header activeHeading={4} />
+      <Header />
       <EventCard active={true} />
       <EventCard active={true} />
     </div>

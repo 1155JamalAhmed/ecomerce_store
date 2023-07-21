@@ -11,6 +11,7 @@ import {
   footercompanyLinks,
 } from "../../static/data";
 import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
 const Footer = () => {
   return (
@@ -20,16 +21,23 @@ const Footer = () => {
           <span className="text-[#56d879]">Subscribe</span> us to get news
           <br /> events and offers
         </h1>
-        <div>
+        <div className="flex items-center">
           <input
             type="text"
             required
             placeholder="Enter your email..."
             className="text-gray-800 md:w-72 w-full sm:mr-5 mr-1 lg:mb-0 mb-4 py-2.5 rounded px-2 focus:outline-none"
           />
-          <button className="bg-[#56d879] hover:bg-teal-500 duration-300 px-5 py-2.5 rounded-md text-white md:w-auto w-full">
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#56d879",
+              color: "white",
+              padding: "10px 12px",
+            }}
+          >
             Submit
-          </button>
+          </Button>
         </div>
       </div>
 

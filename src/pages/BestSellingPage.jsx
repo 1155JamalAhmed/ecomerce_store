@@ -18,7 +18,7 @@ const BestSellingPage = () => {
 
   return (
     <div>
-      <Header activeHeading={2} />
+      <Header />
       <br />
       <br />
 

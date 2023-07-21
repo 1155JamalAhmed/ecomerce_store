@@ -11,7 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const FAQPage = () => {
   return (
     <div>
-      <Header activeHeading={5} />
+      <Header />
       <Faqs />
       <Footer />
     </div>

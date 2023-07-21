@@ -2,10 +2,11 @@ import React from "react";
 import styles from "../../styles/styles";
 import HeroImage from "../../assets/images/Hero.jpg";
 import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 const Hero = () => {
   return (
     <div
-      className={`min-h-[70vh] relative 800px:min-h-[80vh] w-full bg-no-repeat bg-cover  ${styles.normalFlex} mt-20 800px:mt-0`}
+      className={`min-h-[70vh] relative 800px:min-h-[80vh] w-full bg-no-repeat bg-cover  ${styles.normalFlex} 800px:mt-0`}
       style={{ backgroundImage: `url(${HeroImage})` }}
     >
       <div
@@ -22,11 +23,18 @@ const Hero = () => {
             aspernatur optio architecto eum ad.
           </p>
           <Link to="/products" className="inline-block">
-            <div className={`${styles.button} mt-5`}>
-              <span className="text-white font-[Poppins] text-[18px]">
-                Shop Now
-              </span>
-            </div>
+            <Button
+              variant="contained"
+              size="large"
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                marginTop: "1rem",
+                fontSize: "14px",
+              }}
+            >
+              Shop Now
+            </Button>
           </Link>
         </div>
       </div>

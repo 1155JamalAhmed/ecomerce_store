@@ -30,7 +30,7 @@ const ProductsPage = () => {
 
   return (
     <div>
-      <Header activeHeading={3} />
+      <Header />
       <br />
       <br />
 

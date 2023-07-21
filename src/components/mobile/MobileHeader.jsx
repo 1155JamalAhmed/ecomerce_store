@@ -4,19 +4,24 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiMenuAltLeft } from "react-icons/bi";
 import MobileHeaderDrawer from "../mobile/MobileHeaderDrawer";
 import styles from "../../styles/styles.js";
+import { useNavigate } from "react-router-dom";
 
 const MobileHeader = () => {
   const [openCart, setOpenCart] = useState(false);
   const [openMobileDrawer, setOpenMobileDrawer] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <div className="w-full h-[70px] fixed bg-[#fff] z-50 top-0 left-0 shadow-sm 800px:hidden">
+    <div className="w-full h-[70px] sticky bg-[#fff] z-50 top-[0px] left-0 shadow-sm 800px:hidden">
       {/* Header for mobile screens */}
       <div className="w-full h-full flex items-center justify-between">
         <div onClick={() => setOpenMobileDrawer(true)}>
           <BiMenuAltLeft size={40} className="ml-4 cursor-pointer" />
         </div>
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <img
             src="https://img.icons8.com/external-itim2101-lineal-color-itim2101/64/null/external-online-shopping-shopping-and-ecommerce-itim2101-lineal-color-itim2101-4.png"
             alt=""
