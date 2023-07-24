@@ -21,18 +21,23 @@ import {
   CheckoutPage,
   CreateShopPage,
   ShopActivationPage,
+  LoginShopPage,
+  ShopHomePage,
 } from "./routes.js";
 
 // ** REDUX
 import store from "./redux/store";
 import { loadUser } from "./redux/actions/userActions";
 import { useSelector } from "react-redux";
+import { loadShop } from "./redux/actions/shopActions";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
+  const { isShopAuthenticated } = useSelector((state) => state.shop);
 
   useEffect(() => {
     store.dispatch(loadUser());
+    store.dispatch(loadShop());
   }, []);
 
   return (
@@ -50,7 +55,7 @@ const App = () => {
           <Route
             path="/checkout"
             element={
-              <ProtectedRoutes isAuthenticated={isAuthenticated}>
+              <ProtectedRoutes isAuthenticated={isAuthenticated} role="User">
                 <CheckoutPage />
               </ProtectedRoutes>
             }
@@ -58,7 +63,7 @@ const App = () => {
           <Route
             path="/profile"
             element={
-              <ProtectedRoutes isAuthenticated={isAuthenticated}>
+              <ProtectedRoutes isAuthenticated={isAuthenticated} role="User">
                 <ProfilePage />
               </ProtectedRoutes>
             }
@@ -68,11 +73,23 @@ const App = () => {
             path="/users/activation/:activation_token"
             element={<ActivationPage />}
           />
+          <Route path="/create-shop" element={<CreateShopPage />} />
           <Route
             path="/shops/activation/:activation_token"
             element={<ShopActivationPage />}
           />
-          <Route path="/create-shop" element={<CreateShopPage />} />
+          <Route path="/login-shop" element={<LoginShopPage />} />
+          <Route
+            path="/shops/:id"
+            element={
+              <ProtectedRoutes
+                isAuthenticated={isShopAuthenticated}
+                role="Shop"
+              >
+                <ShopHomePage />
+              </ProtectedRoutes>
+            }
+          />
         </Routes>
 
         <ToastContainer

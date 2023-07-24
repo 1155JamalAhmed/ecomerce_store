@@ -1,8 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { server } from "../server";
 import styles from "../styles/styles";
+import axiosInstance from "../utils/axiosInstance";
 
 const ShopActivationPage = () => {
   const { activation_token } = useParams();
@@ -13,15 +12,15 @@ const ShopActivationPage = () => {
     if (activation_token) {
       const activationEmail = async () => {
         try {
-          await axios.post(
-            `${server}/shops/activation`,
+          const res = await axiosInstance.post(
+            `/shops/activation`,
             {
               activation_token: activation_token,
             },
             { withCredentials: true }
           );
           setTimeout(() => {
-            window.location.replace("/");
+            window.location.replace(`/shops/${res.data.body._id}`);
           }, 6000);
           setIsLoading(false);
         } catch (err) {

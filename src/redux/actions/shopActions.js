@@ -1,32 +1,32 @@
 import { toast } from "react-toastify";
 import axiosInstance from "../../utils/axiosInstance";
 
-export const loadUser = () => async (dispatch) => {
+export const loadShop = () => async (dispatch) => {
   try {
     dispatch({
-      type: "LoadUserRequest",
+      type: "LoadShopRequest",
     });
-    const res = await axiosInstance.get(`/users/get-user`, {
+    const res = await axiosInstance.get(`/shops/get-shop`, {
       withCredentials: true,
     });
     dispatch({
-      type: "LoadUserSuccess",
+      type: "LoadShopSuccess",
       payload: res.data.body,
     });
   } catch (err) {
     dispatch({
-      type: "LoadUserFail",
+      type: "LoadShopFail",
       payload: err.response.data.message,
     });
   }
 };
 
-export const loginUser =
+export const loginShop =
   ({ email, password, rememberMe }) =>
   async (dispatch) => {
     try {
       const res = await axiosInstance.post(
-        `/users/login-user`,
+        `/shops/login-shop`,
         {
           email,
           password,
@@ -35,26 +35,26 @@ export const loginUser =
         { withCredentials: true }
       );
       dispatch({
-        type: "LoadUserSuccess",
+        type: "LoadShopSuccess",
         payload: res.data.body,
       });
-      toast.success("Login successful!");
+      toast.success("Shop login successful!");
     } catch (error) {
       toast.error(error.response.data.message);
       dispatch({
-        type: "LoadUserFail",
+        type: "LoadShopFail",
         payload: error.response.data.message,
       });
     }
   };
 
-export const logoutUser = () => async (dispatch) => {
+export const logoutShop = () => async (dispatch) => {
   try {
-    const res = await axiosInstance.get(`/users/logout-user`, {
+    const res = await axiosInstance.get(`/shops/logout-shop`, {
       withCredentials: true,
     });
     dispatch({
-      type: "LogoutUser",
+      type: "LogoutShop",
     });
     toast.success(res.data.message);
   } catch (error) {

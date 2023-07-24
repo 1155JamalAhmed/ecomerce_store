@@ -18,6 +18,7 @@ export const Input = ({
   fieldContClasses,
   fieldClasses,
 }) => {
+  console.log("autoComplete", autoComplete);
   return (
     <div className={`${inputContClasses}`}>
       {label && (

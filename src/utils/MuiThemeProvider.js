@@ -1,14 +1,26 @@
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const appTheme = createTheme({
   palette: {
-    primary: {
-      main: "#f50057",
+    // primary: {
+    //   main: "#f50057",
+    // },
+    // secondary: {
+    //   main: "#4caf50",
+    // },
+    tertiary: {
+      main: "#000",
+      contrastText: "#fff",
     },
-    secondary: {
-      main: "#4caf50",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
     },
-    tertiary: "#4caf50",
   },
 });
 

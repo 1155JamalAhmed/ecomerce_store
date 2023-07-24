@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import { server } from "../server";
+import axiosInstance from "../utils/axiosInstance";
+import FileUpload from "../components/forms/FileUpload";
+import { toast } from "react-toastify";
+import { Input } from "../components/forms/Input";
 
 // ** IMPORTING STYLES
 import styles from "../styles/styles";
@@ -10,24 +12,30 @@ import styles from "../styles/styles";
 // ** IMPORTING ICONS
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { RxAvatar, RxImage } from "react-icons/rx";
-import { toast } from "react-toastify";
-import { Input } from "../components/forms/Input";
-import FileUpload from "../components/forms/FileUpload";
-import { Button, useTheme } from "@material-ui/core";
+
+// ** MUI
+import { Button } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const SignupPage = () => {
-  const theme = useTheme();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [avatarImage, setAvatarImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  // data from the redux store
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const navigate = useNavigate();
+  // loggedin user don't have access to sign up
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,17 +50,18 @@ const SignupPage = () => {
       newFormData.append("bannerImage", bannerImage);
     }
 
-    axios
-      .post(`${server}/users/create-user`, newFormData, {
+    axiosInstance
+      .post(`/users/create-user`, newFormData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
-        toast.success(response.data.message);
-        // setName("");
-        // setEmail("");
-        // setPassword("");
-        // setAvatarImage(null);
-        // setBannerImage(null);
+        toast.success(`${response.data.message}, redirecting to home page...`);
+        setName("");
+        setEmail("");
+        setPassword("");
+        setAvatarImage(null);
+        setBannerImage(null);
+        setTimeout(() => navigate("/"), 3000);
       })
       .catch((err) => {
         toast.error(err.response.data.message);
@@ -62,11 +71,6 @@ const SignupPage = () => {
       });
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -139,28 +143,16 @@ const SignupPage = () => {
             </div>
             {/* SUBMIT BUTTON */}
             <div>
-              {/* <button
-                type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-              >
-                Submit
-              </button> */}
               <Button
-                fullWidth
                 variant="contained"
-                // style={{
-                //   backgroundColor: "black",
-                //   color: "white",
-                //   fontSize: "14px",
-                // }}
-                // color="tertiary"
-                disabled
-                style={{
-                  backgroundColor: theme.palette.tertiary,
-                  color: "white",
-                }}
+                type="submit"
+                fullWidth
+                endIcon={
+                  isSubmitting && <CircularProgress color="inherit" size={20} />
+                }
+                disabled={isSubmitting}
               >
-                Submit
+                {isSubmitting ? "Submitting" : "Submit"}
               </Button>
             </div>
             {/* ALTERNATIVE OPTION */}

@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { server } from "../server";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // ** IMPORTING STYLES
@@ -13,19 +11,35 @@ import { Input } from "../components/forms/Input";
 import TextArea from "../components/forms/TextArea";
 import FileUpload from "../components/forms/FileUpload";
 import { RxAvatar } from "react-icons/rx";
+import { Button, CircularProgress } from "@mui/material";
+import axiosInstance from "../utils/axiosInstance";
+import { useSelector } from "react-redux";
 
 const CreateShopPage = () => {
   const [shopName, setShopName] = useState("");
   const [shopEmail, setShopEmail] = useState("");
-  const [shopProfileImage, setShopeProfileImage] = useState("");
+  const [shopProfileImage, setShopProfileImage] = useState(null);
   const [shopAddress, setShopAddress] = useState("");
   const [shopPassword, setShopPassword] = useState("");
   const [shopPhoneNumber, setShopPhoneNumber] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [visible, setVisible] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  const { isShopAuthenticated } = useSelector((state) => state.shop);
+
+  useEffect(() => {
+    if (isShopAuthenticated) {
+      navigate("/");
+    }
+  }, [isShopAuthenticated, navigate]);
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     const newFormData = new FormData();
     newFormData.append("email", shopEmail);
     newFormData.append("name", shopName);
@@ -35,23 +49,26 @@ const CreateShopPage = () => {
     newFormData.append("password", shopPassword);
     newFormData.append("shopImage", shopProfileImage);
 
-    axios
-      .post(`${server}/shops/create-shop`, newFormData, {
+    axiosInstance
+      .post(`/shops/create-shop`, newFormData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(`${response.data.message}, redirecting to home page...`);
         setShopName("");
         setShopEmail("");
-        setShopeProfileImage("");
+        setShopProfileImage(null);
         setShopAddress("");
         setShopPassword("");
         setShopPhoneNumber("");
         setZipCode("");
-        setShopeProfileImage("");
+        setTimeout(() => navigate("/"), 4000);
       })
       .catch((err) => {
         toast.error(err.response.data.message);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
@@ -85,7 +102,7 @@ const CreateShopPage = () => {
             />
             <Input
               label="Shop Phone Number"
-              type="number"
+              type="tel"
               name="phone"
               isRequired={true}
               onChange={(value) => setShopPhoneNumber(value)}
@@ -139,23 +156,28 @@ const CreateShopPage = () => {
 
             <FileUpload
               fileUpload={shopProfileImage}
-              setFileUpload={setShopeProfileImage}
+              setFileUpload={setShopProfileImage}
               label="Upload Image"
               isRequired={true}
               icon={<RxAvatar className="h-8 w-8" />}
             />
 
             <div>
-              <button
+              <Button
+                variant="contained"
                 type="submit"
-                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                fullWidth
+                endIcon={
+                  isSubmitting && <CircularProgress color="inherit" size={20} />
+                }
+                disabled={isSubmitting}
               >
-                Submit
-              </button>
+                {isSubmitting ? "Submitting" : "Submit"}
+              </Button>
             </div>
             <div className={`${styles.normalFlex} w-full`}>
               <h4>Already have an account?</h4>
-              <Link to="/shop-login" className="text-blue-600 ml-2">
+              <Link to="/login-shop" className="text-blue-600 ml-2" replace>
                 sign in
               </Link>
             </div>

@@ -9,7 +9,6 @@ import { MdOutlineTrackChanges } from "react-icons/md";
 import { TbAddressBook } from "react-icons/tb";
 import { RxPerson } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import store from "../../redux/store";
 import { logoutUser } from "../../redux/actions/userActions";
 
@@ -52,12 +51,8 @@ const ProfileSidebar = ({ active, setActive }) => {
   const navigate = useNavigate();
 
   const logoutUserHandler = async () => {
-    store.dispatch(
-      logoutUser((res) => {
-        navigate("/login");
-        toast.success(res.data.message);
-      })
-    );
+    await store.dispatch(logoutUser());
+    navigate("/login", { replace: true });
   };
 
   return (
