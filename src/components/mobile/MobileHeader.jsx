@@ -5,8 +5,10 @@ import { BiMenuAltLeft } from "react-icons/bi";
 import MobileHeaderDrawer from "../mobile/MobileHeaderDrawer";
 import styles from "../../styles/styles.js";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const MobileHeader = () => {
+  const { cartItems } = useSelector((state) => state.cart);
   const [openCart, setOpenCart] = useState(false);
   const [openMobileDrawer, setOpenMobileDrawer] = useState(false);
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ const MobileHeader = () => {
         >
           <AiOutlineShoppingCart size={40} color="rgba(0 0 0 / 83%)" />
           <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 p-0 m-0 text-white font-mono text-[12px] leading-tight flex justify-center">
-            0
+            {cartItems.length}
           </span>
           {/* cart popup */}
           <CartPopup setOpenCart={setOpenCart} isOpen={openCart} />

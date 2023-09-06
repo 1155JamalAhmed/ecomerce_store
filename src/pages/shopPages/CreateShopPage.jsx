@@ -3,16 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // ** IMPORTING STYLES
-import styles from "../styles/styles";
+import styles from "../../styles/styles";
 
 // ** IMPORTING ICONS
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Input } from "../components/forms/Input";
-import TextArea from "../components/forms/TextArea";
-import FileUpload from "../components/forms/FileUpload";
+import { Input } from "../../components/forms/Input";
+import TextArea from "../../components/forms/TextArea";
+import FileUpload from "../../components/forms/FileUpload";
 import { RxAvatar } from "react-icons/rx";
 import { Button, CircularProgress } from "@mui/material";
-import axiosInstance from "../utils/axiosInstance";
+import axiosInstance from "../../utils/axiosInstance";
 import { useSelector } from "react-redux";
 
 const CreateShopPage = () => {
@@ -177,7 +177,7 @@ const CreateShopPage = () => {
             </div>
             <div className={`${styles.normalFlex} w-full`}>
               <h4>Already have an account?</h4>
-              <Link to="/login-shop" className="text-blue-600 ml-2" replace>
+              <Link to="/shops/login-shop" className="text-blue-600 ml-2" replace>
                 sign in
               </Link>
             </div>

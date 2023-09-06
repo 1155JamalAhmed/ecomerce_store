@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../cards/ProductCard";
-import { productData } from "../../static/data";
 import styles from "../../styles/styles";
+import axiosInstance from "../../utils/axiosInstance";
 
 const BestDeals = () => {
-  const [bestDeals, setBestDeals] = useState();
+  const [data, setData] = useState(null);
+  const [dataIsLoading, setDataIsLoading] = useState(true);
+  const [dataHasError, setDataHasError] = useState(null);
 
   useEffect(() => {
-    const bestDealsData =
-      productData &&
-      productData.sort((a, b) => {
-        return b.total_sell - a.total_sell;
-      });
-    const firstFiveBestDeals = bestDealsData.slice(0, 5);
-    setBestDeals(firstFiveBestDeals);
+    axiosInstance
+      .get("/products/best-deals")
+      .then((res) => setData(res.data.body))
+      .catch((err) => setDataHasError(err.response.data.message))
+      .finally(() => setDataIsLoading(false));
   }, []);
 
   return (
     <div className={`${styles.section}`}>
-      <div className={`${styles.heading}`}>
-        <h1>Best Deals</h1>
-      </div>
+      <h1 className={`${styles.heading}`}>Best Deals</h1>
       <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 border-0">
-        {bestDeals &&
-          bestDeals.map((deal) => <ProductCard key={deal.id} data={deal} />)}
+        {!dataIsLoading &&
+          data &&
+          data.map((product) => (
+            <ProductCard data={product} key={product._id} />
+          ))}
+        {dataIsLoading &&
+          [1, 2, 3, 4].map((item) => <ProductCard key={item} />)}
       </div>
+      {!dataIsLoading && dataHasError && (
+        <h1 className={`${styles.error}`}>{dataHasError}</h1>
+      )}
     </div>
   );
 };

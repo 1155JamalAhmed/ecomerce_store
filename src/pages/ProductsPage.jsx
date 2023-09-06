@@ -2,31 +2,43 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import styles from "../styles/styles";
-import { useSearchParams } from "react-router-dom";
-import { productData } from "../static/data";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ProductCard from "../components/cards/ProductCard";
+import axiosInstance from "../utils/axiosInstance";
+import Loader from "../components/layout/Loader";
+import { Pagination } from "@mui/material";
 
 const ProductsPage = () => {
   const [searchParams] = useSearchParams();
   const categoryFromParams = searchParams?.get("category");
-  const [productsDataState, setProductsDataState] = useState();
+  const pageFromParams = +searchParams?.get("page");
+
+  const [products, setProducts] = useState(null);
+  const [productsHasError, setProductsHasError] = useState(null);
+  const [productsIsLoading, setPorductsIsLoading] = useState(true);
+  const [totalProductCount, setTotalProductCount] = useState(1);
+
+  const navigate = useNavigate();
+
+  const paginationChangeHandler = (_, page) => {
+    searchParams.set("page", page);
+    navigate(`?${searchParams.toString()}`);
+  };
 
   useEffect(() => {
-    if (!categoryFromParams) {
-      const data =
-        productData && productData.sort((a, b) => a.total_sell - b.total_sell);
-
-      setProductsDataState(data);
-    } else {
-      const data =
-        productData &&
-        productData.filter(
-          (product) => product.category === categoryFromParams
-        );
-
-      setProductsDataState(data);
-    }
-  }, [categoryFromParams]);
+    axiosInstance
+      .get(
+        `/products/get-all-products?page=${pageFromParams || "1"}&limit=10${
+          categoryFromParams ? `&category=${categoryFromParams}` : ""
+        }`
+      )
+      .then((res) => {
+        setProducts(res.data.body.products);
+        setTotalProductCount(res.data.body.totalProductsCount);
+      })
+      .catch((err) => setProductsHasError(err.response.data.message))
+      .finally(() => setPorductsIsLoading(false));
+  }, [categoryFromParams, pageFromParams]);
 
   return (
     <div>
@@ -35,16 +47,31 @@ const ProductsPage = () => {
       <br />
 
       <div className={`${styles.section}`}>
-        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
-          {productsDataState &&
-            productsDataState.map((product, index) => (
-              <ProductCard key={index} data={product} />
-            ))}
-        </div>
-        {productsDataState && !productsDataState.length && (
-          <h1 className="text-center w-full pb-[100px] text-[20px]">
-            No product found!
-          </h1>
+        {productsIsLoading && <Loader />}
+        {!productsIsLoading && products && (
+          <>
+            <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
+              {products.map((product, index) => (
+                <ProductCard key={index} data={product} />
+              ))}
+            </div>
+            <br />
+            <div className="flex justify-end">
+              <Pagination
+                count={Math.ceil(totalProductCount / 10)}
+                page={pageFromParams}
+                onChange={paginationChangeHandler}
+                color="primary"
+                shape="rounded"
+                size="large"
+              />
+            </div>
+            <br />
+            <br />
+          </>
+        )}
+        {!productsIsLoading && productsHasError && (
+          <h1 className={`${styles.error}`}>{productsHasError}</h1>
         )}
       </div>
 

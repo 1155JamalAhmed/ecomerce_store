@@ -9,16 +9,17 @@ export const Input = ({
   onChange,
   value,
   autoComplete,
+  placeholder,
   endIcon,
   visibleIcon,
   hiddenIcon,
   passwordVisible,
+  disabled = false,
   inputContClasses,
   labelClasses,
   fieldContClasses,
   fieldClasses,
 }) => {
-  console.log("autoComplete", autoComplete);
   return (
     <div className={`${inputContClasses}`}>
       {label && (
@@ -29,7 +30,7 @@ export const Input = ({
             labelClasses
           )}
         >
-          {label}
+          {label} {isRequired && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className={clsx("mt-1 relative", fieldContClasses)}>
@@ -39,10 +40,13 @@ export const Input = ({
           id={name}
           autoComplete={`${autoComplete ? "on" : "off"}`}
           required={isRequired}
+          autoFocus={false}
           value={value}
+          disabled={disabled}
+          placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
           className={clsx(
-            "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm",
+            "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm disabled:bg-neutral-200 disabled:cursor-not-allowed",
             fieldClasses
           )}
         />
@@ -53,3 +57,5 @@ export const Input = ({
     </div>
   );
 };
+
+// placeholder-gray-400 focus:outline-none focus:ring-blue-500

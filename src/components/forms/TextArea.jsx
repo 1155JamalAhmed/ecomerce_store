@@ -10,6 +10,7 @@ const TextArea = ({
   autoComplete,
   onChange,
   value,
+  placeholder,
 }) => {
   return (
     <div className={`${textAreaContClasses}`}>
@@ -21,7 +22,7 @@ const TextArea = ({
             labelClasses
           )}
         >
-          {label}
+          {label} {isRequired && <span className="text-red-500">*</span>}
         </label>
       )}
       <textarea
@@ -30,6 +31,7 @@ const TextArea = ({
         onChange={(e) => onChange(e.target.value)}
         required={isRequired}
         value={value}
+        placeholder={placeholder}
       ></textarea>
     </div>
   );

@@ -2,12 +2,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const appTheme = createTheme({
   palette: {
-    // primary: {
-    //   main: "#f50057",
-    // },
-    // secondary: {
-    //   main: "#4caf50",
-    // },
     tertiary: {
       main: "#000",
       contrastText: "#fff",
@@ -18,9 +12,19 @@ const appTheme = createTheme({
       styleOverrides: {
         root: {
           textTransform: "none",
+          fontWeight: "normal",
         },
       },
     },
+    // MuiTextField: {
+    //   styleOverrides: {
+    //     root: {
+    //       backgroundColor: "lightgray",
+    //       borderRadius: "6px",
+    //       "::placeholder": "red"
+    //     },
+    //   },
+    // },
   },
 });
 

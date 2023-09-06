@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styles from "../styles/styles";
-import axiosInstance from "../utils/axiosInstance";
+import styles from "../../styles/styles";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ActivationPage = () => {
   const { activation_token } = useParams();

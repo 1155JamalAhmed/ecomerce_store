@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
+import { backend_url } from "../../server";
+import dayjs from "dayjs";
+import { Button } from "@mui/material";
 
 const ProductDetailInfo = ({ data }) => {
   const [active, setActive] = useState(1);
@@ -39,23 +42,7 @@ const ProductDetailInfo = ({ data }) => {
       {active === 1 && (
         <div>
           <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores
-            excepturi ea quam totam rem iusto unde cum. Perferendis ducimus
-            beatae eum sit tempore non tenetur deleniti facilis? Totam, fugit
-            nisi! Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-            Saepe dolore error, veniam fugiat molestias cupiditate, minima ex
-            corrupti est facere magni, laudantium commodi porro perferendis rem
-            iusto. Explicabo, eligendi dolores!
-          </p>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad dolores
-            nisi amet et, eveniet aut minima voluptas maxime iusto illo alias
-            voluptate at, molestias repellendus ex atque corrupti magnam velit.
-          </p>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad dolores
-            nisi amet et, eveniet aut minima voluptas maxime iusto illo alias
-            voluptate at, molestias repellendus ex atque corrupti magnam velit.
+            {data.description}
           </p>
         </div>
       )}
@@ -69,7 +56,7 @@ const ProductDetailInfo = ({ data }) => {
           <div className="w-ful 800px:w-[50%]">
             <div className="flex items-center">
               <img
-                src={data.shop.shop_avatar.url}
+                src={`${backend_url}/${data.shop.avatarImage}`}
                 alt=""
                 className="w-[50px] h-[50px] rounded-full"
               />
@@ -81,28 +68,31 @@ const ProductDetailInfo = ({ data }) => {
                 </h5>
               </div>
             </div>
-            <p className="pt-2 text-justify">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
-              consequatur, dolore voluptate, eum magni dolorum ipsum a totam
-              magnam labore molestiae similique cupiditate amet molestias quod,
-              pariatur tempora repellat alias?
-            </p>
+            <p className="pt-2 text-justify">{data.shop.address}</p>
           </div>
           <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 800px:flex flex-col items-end">
             <div className="text-left">
               <h5 className="font-[600]">
-                Joined on: <span className="font-[400]">14 March,2023</span>
+                Joined on:{" "}
+                <span className="font-[400]">
+                  {" "}
+                  {dayjs(data.shop.createdAt).format("DD MMM, YYYY")}
+                </span>
               </h5>
               <h5 className="font-[600] pt-2">
-                Total Products: <span className="font-[400]">123</span>
+                Total Products:{" "}
+                <span className="font-[400]">{data.shop.totalProduct}</span>
               </h5>
               <h5 className="font-[600] pt-2">
                 Total Reviews: <span className="font-[400]">0</span>
               </h5>
-              <Link to="/">
-                <div className={`${styles.button} rounded-[4px] h-[39px] mt-3`}>
-                  <h4 className="text-white">Visit Shop</h4>
-                </div>
+              <Link
+                to={`/shops/${data.shop._id}`}
+                className="inline-block  mt-2"
+              >
+                <Button variant="contained" color="tertiary">
+                  Visit Shop
+                </Button>
               </Link>
             </div>
           </div>

@@ -3,7 +3,7 @@ import AllOrders from "./AllOrders";
 import AllRefundOrders from "./AllRefundOrders";
 import TrackOrders from "./TrackOrders";
 import ProfileUpdation from "./ProfileUpdation";
-import PaymentMethods from "./PaymentMethods";
+import Security from "./Security";
 import AllAddresses from "./AllAddresses";
 
 const ProfileContent = ({ active }) => {
@@ -36,7 +36,7 @@ const ProfileContent = ({ active }) => {
       {/* Track order tab */}
       {active === 6 && (
         <div>
-          <PaymentMethods />
+          <Security />
         </div>
       )}
       {/* Track order tab */}

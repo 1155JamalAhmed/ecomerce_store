@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styles from "../styles/styles";
-import axiosInstance from "../utils/axiosInstance";
+import styles from "../../styles/styles";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ShopActivationPage = () => {
   const { activation_token } = useParams();
@@ -12,7 +12,7 @@ const ShopActivationPage = () => {
     if (activation_token) {
       const activationEmail = async () => {
         try {
-          const res = await axiosInstance.post(
+          await axiosInstance.post(
             `/shops/activation`,
             {
               activation_token: activation_token,
@@ -20,7 +20,7 @@ const ShopActivationPage = () => {
             { withCredentials: true }
           );
           setTimeout(() => {
-            window.location.replace(`/shops/${res.data.body._id}`);
+            window.location.replace(`/`);
           }, 6000);
           setIsLoading(false);
         } catch (err) {

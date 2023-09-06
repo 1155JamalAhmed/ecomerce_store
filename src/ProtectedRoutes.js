@@ -4,7 +4,10 @@ import { Navigate } from "react-router-dom";
 const ProtectedRoutes = ({ isAuthenticated, children, role }) => {
   if (!isAuthenticated) {
     return (
-      <Navigate to={`${role === "User" ? "/login" : "/login-shop"}`} replace />
+      <Navigate
+        to={`${role === "User" ? "/users/login" : "/shops/login-shop"}`}
+        replace
+      />
     );
   }
   return children;

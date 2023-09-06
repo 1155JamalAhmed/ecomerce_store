@@ -3,18 +3,19 @@ import { AnimatePresence } from "framer-motion";
 import { AiOutlineHeart } from "react-icons/ai";
 import WishlistPopup from "../popups/WishlistPopup";
 import { CloseButton } from "../ui/Button";
-import SearchInput from "../forms/SearchInput";
 import Backdrop from "../ui/Backdrop";
 import Navigation from "../layout/Navigation";
-import { Button } from "@material-ui/core";
+import Button from "@mui/material/Button";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { backend_url } from "../../server";
+import MobileProductSearch from "./MobileProductSearch";
 
 const MobileHeaderDrawer = ({ openMobileDrawer, setOpenMobileDrawer }) => {
   const [openWishlist, setOpenWishlist] = useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { isShopAuthenticated } = useSelector((state) => state.shop);
 
   return (
     <>
@@ -23,7 +24,7 @@ const MobileHeaderDrawer = ({ openMobileDrawer, setOpenMobileDrawer }) => {
       <div
         className={`fixed w-full  400px:w-[55vw] 800px:hidden bg-[#fff] h-screen top-0 transform ${
           openMobileDrawer ? ` translate-x-[0px]` : ` translate-x-[-100%]`
-        } z-10 transition duration-500 px-4`}
+        } z-50 transition duration-500 px-4`}
       >
         <div className="w-full flex justify-between items-center pt-4">
           <div
@@ -44,12 +45,13 @@ const MobileHeaderDrawer = ({ openMobileDrawer, setOpenMobileDrawer }) => {
         </div>
 
         {/* Mobile SEARCH BOX */}
+
         <div className="relative my-8 w-[100%] m-auto h-[40px]">
-          <SearchInput
-            isMobile={true}
+          <MobileProductSearch
             closeMobileHeaderDrawer={() => setOpenMobileDrawer(false)}
           />
         </div>
+
         <Navigation />
         <div className="flex flex-col items-center">
           <div className="mb-3 mt-8">
@@ -97,7 +99,11 @@ const MobileHeaderDrawer = ({ openMobileDrawer, setOpenMobileDrawer }) => {
               fontSize: "14px",
             }}
           >
-            <Link to="/create-shop">Create Shop</Link>
+            {isShopAuthenticated ? (
+              <Link to={`/shops/dashboard`}>Shop Dashboard</Link>
+            ) : (
+              <Link to="/shops/create-shop">Create Shop</Link>
+            )}
           </Button>
         </div>
       </div>

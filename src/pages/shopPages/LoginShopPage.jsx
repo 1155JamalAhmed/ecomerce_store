@@ -1,38 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Input } from "../components/forms/Input";
+import { Input } from "../../components/forms/Input";
 
 // ** IMPORTING STYLES
-import styles from "../styles/styles";
+import styles from "../../styles/styles";
 
 // ** IMPORTING ICONS
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Button, CircularProgress } from "@mui/material";
-import { loginUser } from "../redux/actions/userActions";
-import store from "../redux/store";
+import store from "../../redux/store";
+import { loginShop } from "../../redux/actions/shopActions";
 
-const LoginPage = () => {
+const LoginShopPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isShopAuthenticated, shop } = useSelector((state) => state.shop);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
+    if (isShopAuthenticated) {
+      navigate(`/shops/${shop._id}`, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isShopAuthenticated, navigate, shop]);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
 
     try {
-      await store.dispatch(loginUser({ email, password, rememberMe }));
+      const res = await store.dispatch(
+        loginShop({ email, password, rememberMe })
+      );
+      console.log("res", res);
       // once the above action got performed
       // the isAuthenticated gets truthy
       // hence user will be automatically redirected to home page
@@ -45,7 +48,7 @@ const LoginPage = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Login to your account
+          Login to your Shop
         </h2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -105,7 +108,7 @@ const LoginPage = () => {
                   href="/forgot-password"
                   className="font-medium text-blue-600 hover:text-blue-500"
                 >
-                  Forget your password ?
+                  Forget shop password ?
                 </a>
               </div>
             </div>
@@ -124,7 +127,7 @@ const LoginPage = () => {
             </div>
             <div className={`${styles.normalFlex} w-full`}>
               <h4>Not have an account?</h4>
-              <Link to="/sign-up" className="text-blue-600 ml-2">
+              <Link to="/shops/create-shop" className="text-blue-600 ml-2">
                 Sign Up
               </Link>
             </div>
@@ -135,4 +138,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginShopPage;

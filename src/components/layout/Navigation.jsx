@@ -1,13 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "../../styles/styles";
 import { navItems } from "../../static/data";
 import { Link } from "react-router-dom";
-import NavigationContext from "../../context/navigation-context";
+import useActiveTab from "../../hooks/useActiveTab";
+
+const activeTabMapping = {
+  "/": 1,
+  "/best-selling": 2,
+  "/products": 3,
+  "/events": 4,
+  "/faq": 5,
+};
 
 const Navigation = () => {
-  // Consuming the context
-  const { activeNavOption, changeActiveNavOption } =
-    useContext(NavigationContext);
+  const activeTab = useActiveTab(activeTabMapping);
+
   return (
     <div className={`block 800px:${styles.normalFlex} `}>
       {navItems &&
@@ -15,12 +22,11 @@ const Navigation = () => {
           <div
             className="flex items-center px-4 first:mt-0 my-[16px]  800px:my-0"
             key={index}
-            onClick={() => changeActiveNavOption(index + 1)}
           >
             <Link
               to={item.url}
               className={`${
-                activeNavOption === index + 1
+                activeTab === index + 1
                   ? "text-[#17dd1f]"
                   : "text-black 800px:text-[#fff]"
               } font-[500] cursor-pointer block`}

@@ -36,7 +36,7 @@ const Categories = () => {
           {categoriesData &&
             categoriesData.map((category) => {
               const handleSubmit = (i) => {
-                navigate(`/products?category=${i.title}`);
+                navigate(`/products?category=${i.title}&page=1&limit=10`);
               };
 
               return (

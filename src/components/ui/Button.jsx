@@ -6,6 +6,8 @@ export const CloseButton = ({
   contClasses,
   iconClasses,
   iconSize = 40,
+  id,
+  onClickHandler
 }) => {
   return (
     <div className={clsx("w-full text-right", contClasses)}>
@@ -17,7 +19,7 @@ export const CloseButton = ({
         )}
         onClick={(e) => {
           e.stopPropagation();
-          setOpen(false);
+          id ? onClickHandler(id) : setOpen(false);
         }}
       />
     </div>

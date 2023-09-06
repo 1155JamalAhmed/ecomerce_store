@@ -1,31 +1,48 @@
 import React, { useEffect, useState } from "react";
+import duration from "dayjs/plugin/duration";
+import dayjs from "dayjs";
 
-const calculateTimeLeft = () => {
-  const diff = new Date("2023-04-15") - new Date();
+dayjs.extend(duration);
+
+const calculateTimeLeft = (endDate) => {
+  const diffInMillis = dayjs(endDate).diff(dayjs());
+  const remainingDuration = dayjs.duration(diffInMillis);
+
   let remainingTime = {};
-  if (diff > 0) {
+  if (diffInMillis > 0) {
     remainingTime = {
-      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((diff / (1000 * 60)) % 60),
-      seconds: Math.floor((diff / 1000) % 60),
+      days: remainingDuration.days(),
+      hours: remainingDuration.hours(),
+      minutes: remainingDuration.minutes(),
+      seconds: remainingDuration.seconds(),
     };
   }
   return remainingTime;
 };
 
-const CountDown = () => {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+const CountDown = ({ endDate }) => {
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(endDate));
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft);
-    }, 1000);
+    let requestId;
 
-    return () => {
-      clearTimeout(timer);
+    const updateCountdown = () => {
+      const newTimeLeft = calculateTimeLeft(endDate);
+      setTimeLeft(newTimeLeft);
+      if (Object.keys(newTimeLeft).length !== 0) {
+        // call the requestAimation to get executed before browser repaint the screen
+        requestId = requestAnimationFrame(updateCountdown);
+      }
     };
-  }, [timeLeft]);
+
+    // start the coutdown
+    updateCountdown();
+
+    // clear the animationFrame before calling useEffect again
+    return () => {
+      cancelAnimationFrame(requestId);
+    };
+  }, [endDate]);
 
   const timerComponents = Object.keys(timeLeft).map((interval, index) => {
     if (!timeLeft[interval]) {

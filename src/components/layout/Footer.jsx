@@ -11,7 +11,7 @@ import {
   footercompanyLinks,
 } from "../../static/data";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import Button from '@mui/material/Button';
 
 const Footer = () => {
   return (

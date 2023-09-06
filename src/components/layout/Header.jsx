@@ -7,9 +7,12 @@ import { useMediaQuery } from "react-responsive";
 import Navbar from "./Navbar";
 import SearchInput from "../forms/SearchInput";
 import MobileHeader from "../mobile/MobileHeader";
-import { Button } from "@material-ui/core";
+import Button from "@mui/material/Button";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const { isShopAuthenticated } = useSelector((state) => state.shop);
+
   const desktopView = useMediaQuery({
     query: `(min-width: 800px)`,
   });
@@ -40,14 +43,13 @@ const Header = () => {
                 endIcon={<IoIosArrowForward size={20} />}
                 variant="contained"
                 size="large"
-                style={{
-                  backgroundColor: "black",
-                  color: "white",
-                  padding: "12px 14px",
-                  fontSize: "14px",
-                }}
+                color="tertiary"
               >
-                <Link to="/create-shop">Create Shop</Link>
+                {isShopAuthenticated ? (
+                  <Link to={`/shops/dashboard`}>Shop Dashboard</Link>
+                ) : (
+                  <Link to="/shops/create-shop">Create Shop</Link>
+                )}
               </Button>
             </div>
           </div>

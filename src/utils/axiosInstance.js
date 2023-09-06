@@ -19,8 +19,8 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response) {
       // The request was made, but the server responded with an error status code
-      console.log("API response error:", error.response.data);
-      console.log("Status code:", error.response.status);
+      console.log("Response Interceptor error:", error.response.data);
+      console.log("Response Interceptor Status code:", error.response.status);
     } else if (error.request) {
       // The request was made, but no response was received i.e: the server is not running
       console.log("API request error:", error);

@@ -1,5 +1,5 @@
-import { DataGrid } from "@material-ui/data-grid";
-import { Button } from "@material-ui/core";
+import { DataGrid } from "@mui/x-data-grid";
+import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 import { MdOutlineTrackChanges } from "react-icons/md";
 

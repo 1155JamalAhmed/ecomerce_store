@@ -7,15 +7,20 @@ import store from "./redux/store";
 import { NavigationContextProvider } from "./context/navigation-context";
 import { AppMuiThemeProvider } from "./utils/MuiThemeProvider";
 
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <NavigationContextProvider>
-    <Provider store={store}>
-      <AppMuiThemeProvider>
-        <App />
-      </AppMuiThemeProvider>
-    </Provider>
-  </NavigationContextProvider>
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <NavigationContextProvider>
+      <Provider store={store}>
+        <AppMuiThemeProvider>
+          <App />
+        </AppMuiThemeProvider>
+      </Provider>
+    </NavigationContextProvider>
+  </LocalizationProvider>
 );
 
 reportWebVitals();

@@ -1,63 +1,47 @@
-import ClickAwayListener from "@material-ui/core/ClickAwayListener/ClickAwayListener";
+import { ClickAwayListener } from "@mui/material";
 import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { productData } from "../../static/data";
 import { RxCross1 } from "react-icons/rx";
+import axiosInstance from "../../utils/axiosInstance";
+import { backend_url } from "../../server";
+import Loader from "../layout/Loader";
+import styles from "../../styles/styles";
 
-const SearchInput = ({ isMobile = false, closeMobileHeaderDrawer }) => {
+const SearchInput = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState(null);
+  const [searchDataIsLoading, setSearchDataIsLoading] = useState(false);
+  const [searchDataHasError, setSearchDataHasError] = useState(null);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
 
-  const handleSearchChange = (e) => {
-    const term = e.target.value;
+  const handleSearchChange = async (e) => {
+    const term = e.target.value.trim();
     setSearchTerm(term);
-    !isMobile && setShowSearchDropdown(true);
-
-    const filteredProducts =
-      productData &&
-      productData.filter((product) =>
-        product.name.toLowerCase().includes(term.toLowerCase())
-      );
-    setSearchData(filteredProducts);
-
-    if (term.length === 0) {
+    setShowSearchDropdown(true);
+    if (term.length !== 0) {
+      try {
+        setSearchDataIsLoading(true);
+        const res = await axiosInstance.get(
+          `/products/search-products-by-name?productName=${term}`
+        );
+        setSearchData(res.data.body);
+        setSearchDataHasError(null);
+      } catch (err) {
+        setSearchDataHasError(err.response.data.message);
+      } finally {
+        setSearchDataIsLoading(false);
+      }
+    } else {
       setSearchData(null);
+      setSearchDataHasError(null);
+      setShowSearchDropdown(false);
     }
   };
 
-  const searchedItems = (
-    <div className="absolute min-h-[30vh] max-h-[70vh] bg-slate-50 shadow-sm-2 z-[9] py-4 top-11 overflow-y-auto w-full">
-      {searchData?.map((item, index) => {
-        const Product_name = item.name.replace(/\s+/g, "-");
-        return (
-          <Link
-            to={`/products/${Product_name}`}
-            key={index}
-            onClick={isMobile ? closeMobileHeaderDrawer : () => handleSearchChange({ target: { value: "" } })}
-          >
-            <div className="flex py-2 hover:bg-slate-200 px-4">
-              <img
-                src={item.image_Url[0].url}
-                alt=""
-                className="w-[40px] h-[40px] mr-[10px]"
-              />
-              <h1>{item.name}</h1>
-            </div>
-          </Link>
-        );
-      })}
-    </div>
-  );
-
   return (
     <>
-      <ClickAwayListener
-        onClickAway={() => {
-          !isMobile && setShowSearchDropdown(false);
-        }}
-      >
+      <ClickAwayListener onClickAway={() => setShowSearchDropdown(false)}>
         <div>
           <input
             type="text"
@@ -87,16 +71,43 @@ const SearchInput = ({ isMobile = false, closeMobileHeaderDrawer }) => {
         </div>
       </ClickAwayListener>
 
-      {/* For mobile */}
-      {isMobile ? searchData && searchData.length !== 0 && searchedItems : null}
-
       {/* for desktop */}
-      {!isMobile
-        ? showSearchDropdown &&
-          searchData &&
-          searchData.length !== 0 &&
-          searchedItems
-        : null}
+      {showSearchDropdown && (
+        <div
+          className={`absolute min-h-[37vh] max-h-[70vh] bg-slate-50 shadow-sm z-[9] py-4 top-11 overflow-y-auto w-full`}
+        >
+          {searchDataIsLoading && !searchDataHasError && (
+            <Loader className="max-h-[35vh]" />
+          )}
+          {!searchDataIsLoading && searchDataHasError && (
+            <h1 className={`${styles.error}`}>{searchDataHasError}</h1>
+          )}
+          {!searchDataIsLoading && searchData && searchData.length === 0 && (
+            <h1 className={`${styles.error}`}>
+              No product found with this product name
+            </h1>
+          )}
+          {searchData &&
+            searchData?.map((item, index) => {
+              return (
+                <Link
+                  to={`/products/${item.slug}`}
+                  key={index}
+                  onClick={() => handleSearchChange({ target: { value: "" } })}
+                >
+                  <div className="flex py-2 hover:bg-slate-200 px-4">
+                    <img
+                      src={`${backend_url}/${item.images[0]}`}
+                      alt=""
+                      className="w-[40px] h-[40px] mr-[10px]"
+                    />
+                    <h1>{item.name}</h1>
+                  </div>
+                </Link>
+              );
+            })}
+        </div>
+      )}
     </>
   );
 };

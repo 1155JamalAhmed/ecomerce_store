@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axiosInstance from "../utils/axiosInstance";
-import FileUpload from "../components/forms/FileUpload";
+import axiosInstance from "../../utils/axiosInstance";
+import FileUpload from "../../components/forms/FileUpload";
 import { toast } from "react-toastify";
-import { Input } from "../components/forms/Input";
+import { Input } from "../../components/forms/Input";
 
 // ** IMPORTING STYLES
-import styles from "../styles/styles";
+import styles from "../../styles/styles";
 
 // ** IMPORTING ICONS
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -158,7 +158,7 @@ const SignupPage = () => {
             {/* ALTERNATIVE OPTION */}
             <div className={`${styles.normalFlex} w-full`}>
               <h4>Already have an account?</h4>
-              <Link to="/login" className="text-blue-600 ml-2">
+              <Link to="/users/login" className="text-blue-600 ml-2">
                 Sign In
               </Link>
             </div>

@@ -2,6 +2,9 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   isShopAuthenticated: false,
+  shopLoading: true,
+  shopError: null,
+  shop: null,
 };
 
 export const shopReducer = createReducer(initialState, {

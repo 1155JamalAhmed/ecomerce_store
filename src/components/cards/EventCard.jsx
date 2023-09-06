@@ -2,44 +2,37 @@ import React from "react";
 import styles from "../../styles/styles";
 
 import CountDown from "../helpers/CountDown";
+import { backend_url } from "../../server";
 
-const EventCard = ({ active }) => {
+const EventCard = ({ active, data }) => {
   return (
     <div
-      className={`w-full bg-white rounded-lg lg:flex p-4 ${
-        active ? "mb-0" : "mb-12"
+      className={`w-[100%] mx-auto bg-white rounded-lg lg:flex py-6 px-4 ${
+        active ? "lg:w-[90%] my-2 border-2 border-gray-200 shadow-md" : "mb-12"
       } `}
     >
-      <div className="w-[60vw] h-[50vh] lg:w-[50%] lg:h-full m-auto">
+      <div className="w-[100%] h-[50vh] lg:flex-[40%] overflow-hidden rounded-t-lg lg:mr-6">
         <img
-          src="https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg"
-          alt=" "
+          src={`${backend_url}/${data.images[0]}`}
+          alt=""
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="w-full lg:w-[50%] flex flex-col justify-center">
-        <h2 className={`${styles.productTitle}`}>Iphone 14pro max 8/256gb</h2>
-        <p className="text-justify">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem
-          velit, ex exercitationem alias repudiandae ea possimus non
-          voluptatibus quibusdam molestiae error nemo, aut dolore, optio totam
-          molestias aperiam deleniti mollitia! Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Eaque cumque hic animi voluptates illo,
-          dolore deleniti! Neque suscipit tenetur quis, perspiciatis optio
-          aspernatur quasi ea, porro ullam incidunt reiciendis consectetur!
-        </p>
+      <div className="lg:flex-[55%] flex flex-col justify-center">
+        <h2 className={`${styles.productTitle}`}>{data.name}</h2>
+        <p className="text-justify">{data.description}</p>
         <div className="flex py-2 justify-between w-full items-center">
           <h5 className="font-[500] text-[18px] text-[#d55b45] line-through pr-3">
-            1099$
+            {data.originalPrice}$
           </h5>
           <h5 className="font-bold text-[20px] text-[#333] font-Roboto">
-            999$
+            {data.discountPrice}$
           </h5>
           <h5 className="pr-3 font-[400] text-[17px] text-[#44a55e] ml-auto">
-            120 sold
+            {data.sold_out} sold
           </h5>
         </div>
-        <CountDown />
+        <CountDown endDate={data.endDate} />
       </div>
     </div>
   );

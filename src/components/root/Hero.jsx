@@ -2,7 +2,8 @@ import React from "react";
 import styles from "../../styles/styles";
 import HeroImage from "../../assets/images/Hero.jpg";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import Button from '@mui/material/Button';
+
 const Hero = () => {
   return (
     <div

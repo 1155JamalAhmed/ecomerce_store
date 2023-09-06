@@ -14,11 +14,13 @@ import WishlistPopup from "../popups/WishlistPopup";
 import CartPopup from "../popups/CartPopup";
 import { BiMenuAltLeft } from "react-icons/bi";
 
-const Navbar = ({ activeHeading }) => {
+const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { cartItems } = useSelector((state) => state.cart);
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const { wlItems } = useSelector((state) => state.wishlist);
 
   return (
     <div className="sticky top-[0px] z-[1] transition hidden 800px:flex items-center justify-between w-full bg-[#3321c8] h-[70px]">
@@ -47,7 +49,7 @@ const Navbar = ({ activeHeading }) => {
 
         {/* NAVITEMS */}
         <div className={`${styles.normalFlex}`}>
-          <Navigation active={activeHeading} />
+          <Navigation />
         </div>
 
         <div className={`${styles.normalFlex}`}>
@@ -58,7 +60,7 @@ const Navbar = ({ activeHeading }) => {
           >
             <AiOutlineHeart size={30} color="rgba(255 255 255 / 83%)" />
             <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 p-0 m-0 text-white font-mono text-[12px] leading-tight flex justify-center">
-              8
+              {wlItems.length}
             </span>
 
             <WishlistPopup
@@ -74,7 +76,7 @@ const Navbar = ({ activeHeading }) => {
           >
             <AiOutlineShoppingCart size={30} color="rgba(255 255 255 / 83%)" />
             <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 p-0 m-0 text-white font-mono text-[12px] leading-tight flex justify-center">
-              0
+              {cartItems.length}
             </span>
             {/* cart popup */}
             <CartPopup setOpenCart={setOpenCart} isOpen={openCart} />
@@ -83,7 +85,7 @@ const Navbar = ({ activeHeading }) => {
           {/* USER PROFILE */}
           <div className="cursor-pointer">
             {isAuthenticated ? (
-              <Link to="/profile">
+              <Link to="/users/profile">
                 <img
                   src={`${backend_url}/${user.avatarImage}`}
                   alt=""
@@ -91,7 +93,7 @@ const Navbar = ({ activeHeading }) => {
                 />
               </Link>
             ) : (
-              <Link to="/login">
+              <Link to="/users/login">
                 <CgProfile size={30} color="rgba(255 255 255 / 83%)" />
               </Link>
             )}

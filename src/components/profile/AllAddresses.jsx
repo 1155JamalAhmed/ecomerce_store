@@ -1,31 +1,82 @@
+import { Button } from "@mui/material";
 import styles from "../../styles/styles";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import AddAddressPopup from "../popups/AddAddressPopup";
+import ActionPopup from "../popups/ActionPopup";
+import store from "../../redux/store";
+import { removeUserAddress } from "../../redux/actions/userActions";
 
 const AllAddresses = () => {
+  const { user } = useSelector((state) => state.user);
+  const [openModal, setOpenModal] = useState(false);
+
   return (
-    <div className="w-full px-5">
-      <div className="flex w-full items-center justify-between">
-        <h1 className="text-[25px] font-[600] text-[#000000ba] pb-2">
-          My Addresses
-        </h1>
-        <div className={`${styles.button} !rounded-md`}>
-          <span className="text-[#fff]">Add New</span>
+    <>
+      <div className="w-full px-5">
+        <div className="flex flex-wrap w-full items-center justify-between mb-4">
+          <h1 className={`${styles.profileHeading}`}>My Addresses</h1>
+          <Button
+            variant="contained"
+            color="tertiary"
+            onClick={() => setOpenModal(true)}
+            size="large"
+          >
+            Add New Address
+          </Button>
+        </div>
+        <div className="space-y-4">
+          {user.addresses.map((address, index) => (
+            <Address key={index} address={address} />
+          ))}
         </div>
       </div>
+      <AddAddressPopup open={openModal} setOpen={setOpenModal} />
+    </>
+  );
+};
 
-      <div className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10">
-        <h5 className="pl-5 font-[600]">Default</h5>
-        <div className="pl-8 flex items-center">
-          <h6 className="max-w-[300px] overflow-hidden">Future Colony, Landhi Karachi no#22, near norani masjid</h6>
-        </div>
-        <div className="pl-8 flex items-center">
-          <h6>+92 3499591483</h6>
-        </div>
-        <div className="min-w-[10%] flex items-center justify-between pl-8">
+const Address = ({ address }) => {
+  const [deletePopup, setDeletePopup] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const addressDeletionConfirmHandler = async (addressId) => {
+    setDeleting(true);
+    try {
+      await store.dispatch(removeUserAddress(addressId));
+    } catch (err) {
+    } finally {
+      setDeleting(false);
+      setDeletePopup(false);
+    }
+  };
+
+  return (
+    <>
+      <div className="flex flex-wrap flex-row sm:items-center justify-between p-5 bg-white rounded-[4px] shadow-md ">
+        <h5 className="font-[600] flex-[40%] sm:flex-1 sm:min-w-[60px]">
+          {address.addressType}
+        </h5>
+        <h6 className="w-full my-3 sm:my-0 sm:max-w-[250px] overflow-hidden order-1 sm:order-none">
+          {address.fullAddress}
+        </h6>
+        <h6 className="flex-[40%] sm:flex-1">{address.zipCode}</h6>
+        <div
+          className="min-w-[20px] flex items-center justify-end"
+          onClick={() => setDeletePopup(true)}
+        >
           <AiOutlineDelete size={25} className="cursor-pointer" />
         </div>
       </div>
-    </div>
+      <ActionPopup
+        open={deletePopup}
+        setOpen={setDeletePopup}
+        message="Do you want to delete this address?"
+        productToBeDeleted={address._id}
+        executeAction={addressDeletionConfirmHandler}
+        isDeleting={deleting}
+      />
+    </>
   );
 };
 

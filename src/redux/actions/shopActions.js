@@ -3,9 +3,6 @@ import axiosInstance from "../../utils/axiosInstance";
 
 export const loadShop = () => async (dispatch) => {
   try {
-    dispatch({
-      type: "LoadShopRequest",
-    });
     const res = await axiosInstance.get(`/shops/get-shop`, {
       withCredentials: true,
     });

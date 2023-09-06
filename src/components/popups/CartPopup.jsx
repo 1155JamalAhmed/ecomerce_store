@@ -6,26 +6,12 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { CloseButton } from "../ui/Button";
 import Backdrop from "../ui/Backdrop";
-
-const cartsData = [
-  {
-    name: "Iphone 14 pro max, 256gb ssd, and 8gb of ram",
-    description: "test",
-    price: 999,
-  },
-  {
-    name: "Iphone 14 pro max, 256gb ssd, and 8gb of ram",
-    description: "test",
-    price: 289,
-  },
-  {
-    name: "Iphone 14 pro max, 256gb ssd, and 8gb of ram",
-    description: "test",
-    price: 245,
-  },
-];
+import { useSelector } from "react-redux";
 
 const CartPopup = ({ setOpenCart, isOpen }) => {
+  const { cartItems, cartItemsIsLoading, cartItemsError, grandTotal } =
+    useSelector((state) => state.cart);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -43,25 +29,31 @@ const CartPopup = ({ setOpenCart, isOpen }) => {
               {/* Items length */}
               <div className={`${styles.normalFlex} p-4`}>
                 <IoBagHandleOutline size={25} />
-                <h5 className="pl-2 text-[20px] font-[500]">3 items</h5>
+                <h5 className="pl-2 text-[20px] font-[500]">
+                  {cartItems.length} items
+                </h5>
               </div>
 
               {/* Cart items */}
               <div className="w-full border-t">
-                {cartsData &&
-                  cartsData.map((cart, index) => (
-                    <CartItem key={index} cart={cart} />
+                {!cartItemsIsLoading &&
+                  cartItems &&
+                  cartItems.map((item) => (
+                    <CartItem key={item._id} item={item} />
                   ))}
+                {cartItemsError && !cartItemsIsLoading && (
+                  <h1 className={`${styles.error}`}>{cartItemsError}</h1>
+                )}
               </div>
             </div>
             <div className="px-5 mb-3">
               {/* checkout buttons */}
-              <Link to="/checkout">
+              <Link to="/users/checkout">
                 <div
                   className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}
                 >
                   <h1 className="text-white text-[18px] font-[600]">
-                    Checkout Now (USD$1080)
+                    Checkout Now (USD${grandTotal})
                   </h1>
                 </div>
               </Link>
