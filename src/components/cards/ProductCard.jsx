@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
 import ProductCardPopup from "../popups/ProductCardPopup";
+import RatingWithFeedback from "../forms/RatingWithFeedback";
 import {
   AiFillHeart,
-  AiFillStar,
   AiOutlineEye,
   AiOutlineHeart,
   AiOutlineShoppingCart,
-  AiOutlineStar,
 } from "react-icons/ai";
 import { backend_url } from "../../server";
 import { Skeleton } from "@mui/material";
@@ -93,24 +92,7 @@ const ProductCard = ({ data }) => {
                 : data.name}
             </h4>
             <div className="flex">
-              {[...Array(5)].map((star, index) => {
-                if (index < data.rating) {
-                  return (
-                    <AiFillStar
-                      className="mr-2 cursor-pointer text-[#f6ba00]"
-                      size={20}
-                      key={index + 1}
-                    />
-                  );
-                }
-                return (
-                  <AiOutlineStar
-                    className="mr-2 cursor-pointer text-[#f6ba00]"
-                    size={20}
-                    key={index + 1}
-                  />
-                );
-              })}
+              <RatingWithFeedback value={data.avgRating} disabled={true} />
             </div>
             <div className="py-2 flex items-center justify-between">
               <div className="flex">

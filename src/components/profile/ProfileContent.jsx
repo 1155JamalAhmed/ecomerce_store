@@ -1,10 +1,9 @@
 import React from "react";
 import AllOrders from "./AllOrders";
-import AllRefundOrders from "./AllRefundOrders";
-import TrackOrders from "./TrackOrders";
 import ProfileUpdation from "./ProfileUpdation";
 import Security from "./Security";
 import AllAddresses from "./AllAddresses";
+import ProfileInbox from "../../pages/userPages/ProfileInbox";
 
 const ProfileContent = ({ active }) => {
   return (
@@ -13,34 +12,17 @@ const ProfileContent = ({ active }) => {
       {active === 1 && <ProfileUpdation />}
 
       {/* Order tab */}
-      {active === 2 && (
-        <div>
-          <AllOrders />
-        </div>
-      )}
-
-      {/* Refund tab */}
-      {active === 3 && (
-        <div>
-          <AllRefundOrders />
-        </div>
-      )}
-
-      {/* Track orders tab */}
-      {active === 5 && (
-        <div>
-          <TrackOrders />
-        </div>
-      )}
+      {active === 2 && <AllOrders />}
+      {active === 3 && <ProfileInbox />}
 
       {/* Track order tab */}
-      {active === 6 && (
+      {active === 4 && (
         <div>
           <Security />
         </div>
       )}
       {/* Track order tab */}
-      {active === 7 && (
+      {active === 5 && (
         <div>
           <AllAddresses />
         </div>

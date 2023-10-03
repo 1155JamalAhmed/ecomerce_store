@@ -9,6 +9,7 @@ import { AppMuiThemeProvider } from "./utils/MuiThemeProvider";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,7 +17,9 @@ root.render(
     <NavigationContextProvider>
       <Provider store={store}>
         <AppMuiThemeProvider>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </AppMuiThemeProvider>
       </Provider>
     </NavigationContextProvider>

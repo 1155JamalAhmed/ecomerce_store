@@ -37,7 +37,7 @@ export const Input = ({
         <input
           type={type === "password" && passwordVisible ? "text" : type}
           name={name}
-          id={name}
+          id={label}
           autoComplete={`${autoComplete ? "on" : "off"}`}
           required={isRequired}
           autoFocus={false}

@@ -58,3 +58,52 @@ export const logoutShop = () => async (dispatch) => {
     toast.error(error.response.data.message);
   }
 };
+
+export const updateOrderStatusByShop =
+  ({ orderId, newStatus }) =>
+  async (dispatch) => {
+    try {
+      await axiosInstance.patch(
+        `/orders/update-order-by-shop`,
+        {
+          orderId,
+          newStatus,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: "UpdateOrderStatus",
+        payload: { orderId, newStatus },
+      });
+
+      toast.success("Order status updated to " + newStatus);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+export const updateShopData =
+  ({ currentPassword, name, phoneNumber }) =>
+  async (dispatch) => {
+    try {
+      const res = await axiosInstance.patch(
+        `/shops/update-shop-data`,
+        {
+          currentPassword,
+          name,
+          phoneNumber,
+        },
+        { withCredentials: true }
+      );
+      dispatch({
+        type: "UpdateShopData",
+        payload: res.data.body,
+      });
+      toast.success("Shop profile updated successful!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };

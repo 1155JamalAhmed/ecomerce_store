@@ -8,7 +8,7 @@ import styles from "../styles/styles";
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
-  const [totalEvents, setTotalEvents] = useState(1);
+  const [totalEvents, setTotalEvents] = useState(0);
   const [firstRender, setFirstRender] = useState(true);
 
   // first render if have any error and loading
@@ -27,7 +27,7 @@ const EventsPage = () => {
   const fetchEvents = useCallback(
     (pageFromParams) => {
       axiosInstance
-        .get(`/events/get-all-events?page=${pageFromParams}&limit=1`)
+        .get(`/events/get-all-events?page=${pageFromParams}&limit=3`)
         .then((res) => {
           setEvents((prevState) => [...prevState, ...res.data.body.events]);
           setTotalEvents(res.data.body.totalEventsCount);
@@ -67,7 +67,7 @@ const EventsPage = () => {
           fetchEvents(pageFromParams + 1);
         }
       }, options);
-      
+
       if (bottomInterObserve && document.getElementById("bottom-trigger")) {
         bottomInterObserve.observe(document.getElementById("bottom-trigger"));
       }
@@ -109,6 +109,9 @@ const EventsPage = () => {
       )}
       {!eventsIsLoading && eventsHasError && (
         <h1 className={`${styles.error}`}>{eventsHasError}</h1>
+      )}
+      {!eventsIsLoading && totalEvents === 0 && (
+        <h1 className={`${styles.empty}`}>No event is running right now</h1>
       )}
     </div>
   );

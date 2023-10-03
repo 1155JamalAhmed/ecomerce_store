@@ -48,7 +48,7 @@ const CartPopup = ({ setOpenCart, isOpen }) => {
             </div>
             <div className="px-5 mb-3">
               {/* checkout buttons */}
-              <Link to="/users/checkout">
+              <Link to="/users/checkout/enter-shipping-info">
                 <div
                   className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}
                 >

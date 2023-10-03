@@ -25,6 +25,18 @@ export const shopReducer = createReducer(initialState, {
     state.isShopAuthenticated = false;
     state.shop = null;
   },
+  UpdateShopData: (state, action) => {
+    state.shop = action.payload;
+  },
+  UpdateOrderStatus: (state, action) => {
+    state.shop.orders = state.shop.orders.map((order) => {
+      if (order._id === action.payload.orderId) {
+        return { ...order, status: action.payload.newStatus };
+      } else {
+        return order;
+      }
+    });
+  },
   clearShopErrors: (state) => {
     state.shopError = null;
   },

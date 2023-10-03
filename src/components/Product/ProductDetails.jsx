@@ -18,6 +18,7 @@ import {
   addItemToWishlist,
   removeItemFromWishlist,
 } from "../../redux/actions/wishlistActions";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
@@ -28,6 +29,7 @@ const ProductDetails = ({ data }) => {
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
   const [addingToCart, setAddingToCart] = useState(false);
+  const [creatingChat, setCreatingChat] = useState(false);
 
   useEffect(() => {
     setItemIsInWishlist(
@@ -35,8 +37,25 @@ const ProductDetails = ({ data }) => {
     );
   }, [wlItems, setItemIsInWishlist, data._id]);
 
-  const handleMessageSubmit = () => {
-    navigate("/inbox?conversation=090078601telenor");
+  const handleMessageSubmit = async () => {
+    setCreatingChat(true);
+
+    axiosInstance
+      .post(
+        `/chats/create-chat`,
+        {
+          shopId: data.shop._id,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log(res.data.body);
+        navigate("/users/profile");
+      })
+      .catch((err) => console.log("Err", err.response.data.message))
+      .finally(() => {
+        setCreatingChat(false);
+      });
   };
 
   const addToCartClickHandler = async () => {
@@ -181,14 +200,21 @@ const ProductDetails = ({ data }) => {
                   <h5 className="text-[15px]">{data.shop.ratings} Ratings</h5>
                 </div>
 
-                <div
-                  className={`${styles.button}  bg-blue-700 !rounded h-11 ml-8`}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
                   onClick={handleMessageSubmit}
+                  className="!mt-4 !ml-3"
+                  endIcon={
+                    creatingChat && (
+                      <CircularProgress color="inherit" size={20} />
+                    )
+                  }
+                  disabled={creatingChat}
                 >
-                  <span className="text-[#fff] flex items-center">
-                    Send Message <AiOutlineMessage className="ml-1" />
-                  </span>
-                </div>
+                  Send Message <AiOutlineMessage size={20} />
+                </Button>
               </div>
             </div>
           </div>

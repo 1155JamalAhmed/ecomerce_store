@@ -28,6 +28,15 @@ export const userReducer = createReducer(initialState, {
   RemoveAddressOfUser: (state, action) => {
     state.user.addresses = action.payload.addresses;
   },
+  UpdateOrderStatus: (state, action) => {
+    state.user.orders = state.user.orders.map((order) => {
+      if (order._id === action.payload.orderId) {
+        return { ...order, status: action.payload.newStatus };
+      } else {
+        return order;
+      }
+    });
+  },
   LogoutUser: (state) => {
     state.isAuthenticated = false;
     state.user = null;

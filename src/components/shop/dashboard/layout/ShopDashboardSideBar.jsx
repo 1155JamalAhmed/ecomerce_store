@@ -7,7 +7,6 @@ import { MdOutlineLocalOffer } from "react-icons/md";
 import { VscNewFile } from "react-icons/vsc";
 import { CiMoneyBill, CiSettings } from "react-icons/ci";
 import { BiMessageSquareDetail } from "react-icons/bi";
-import { HiOutlineReceiptRefund } from "react-icons/hi";
 
 const ShopDashboardSideBar = ({ active }) => {
   const sideBarOptions = [
@@ -49,11 +48,6 @@ const ShopDashboardSideBar = ({ active }) => {
       label: "Discount Code",
     },
     {
-      to: "/shops/dashboard/refunds",
-      icon: HiOutlineReceiptRefund,
-      label: "Refunds",
-    },
-    {
       to: "/shops/dashboard/settings",
       icon: CiSettings,
       label: "Settings",
@@ -64,7 +58,7 @@ const ShopDashboardSideBar = ({ active }) => {
     <div className="col-span-1">
       <div className="bg-white shadow-sm h-[90vh] overflow-y-auto fixed top-[80px] left-0">
         {sideBarOptions.map(({ to, icon: Icon, label }, index) => (
-          <div className="w-full flex items-center p-4" key={index}>
+          <div className="w-full flex items-center p-4 last:mb-4" key={index}>
             <Link to={to} replace className="w-full flex items-center">
               <Icon
                 size={30}

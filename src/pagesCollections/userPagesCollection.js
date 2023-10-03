@@ -4,8 +4,9 @@ import ActivationPage from "../pages/userPages/ActivationPage";
 import ProfilePage from "../pages/userPages/ProfilePage";
 import InboxPage from "../pages/userPages/InboxPage";
 import CheckoutPage from "../pages/userPages/CheckoutPage";
-import OrderSuccessPage from "../pages/userPages/OrderSuccessPage.jsx";
-import PaymentPage from "../pages/userPages/PaymentPage.jsx";
+import OrderSuccessPage from "../pages/userPages/OrderSuccessPage";
+import PaymentPage from "../pages/userPages/PaymentPage";
+import OrderDetailPage from "../pages/userPages/OrderDetailPage";
 
 export {
   LoginPage,
@@ -16,4 +17,5 @@ export {
   CheckoutPage,
   OrderSuccessPage,
   PaymentPage,
+  OrderDetailPage,
 };

@@ -6,6 +6,8 @@ import { eventReducer } from "./reducers/eventReducer";
 import { couponReducer } from "./reducers/couponReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import { wishlistReducer } from "./reducers/wishlistReducer";
+import { shopChatsReducer } from "./reducers/shopChatsReducer";
+import { userChatsReducer } from "./reducers/userChatsReducer";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +18,8 @@ const store = configureStore({
     coupons: couponReducer,
     cart: cartReducer,
     wishlist: wishlistReducer,
+    shopChats: shopChatsReducer,
+    userChats: userChatsReducer,
   },
 });
 

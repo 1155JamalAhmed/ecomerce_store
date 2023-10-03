@@ -1,5 +1,6 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
 
 const ProtectedRoutes = ({ isAuthenticated, children, role }) => {
   if (!isAuthenticated) {
@@ -10,6 +11,20 @@ const ProtectedRoutes = ({ isAuthenticated, children, role }) => {
       />
     );
   }
+  return children;
+};
+
+export const OrderDetailProtect = ({ children }) => {
+  const { from } = useLocation().state;
+  const { isShopAuthenticated } = useSelector((state) => state.shop);
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  if (from === "user" && !isAuthenticated) {
+    return <Navigate to="/users/login" />;
+  } else if (from === "shop" && !isShopAuthenticated) {
+    return <Navigate to="/shops/login-shop" />;
+  }
+
   return children;
 };
 

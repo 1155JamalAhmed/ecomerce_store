@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { backend_url } from "../../server";
 import dayjs from "dayjs";
 import { Button } from "@mui/material";
+import RatingWithFeedback from "../forms/RatingWithFeedback";
+import ReviewList from "../reviews/ReviewList";
 
 const ProductDetailInfo = ({ data }) => {
   const [active, setActive] = useState(1);
@@ -47,8 +49,8 @@ const ProductDetailInfo = ({ data }) => {
         </div>
       )}
       {active === 2 && (
-        <div className="w-full justify-center min-h-[40vh] flex items-center ">
-          <p>No Reviews yet! </p>
+        <div className="w-full min-h-[40vh] mt-8">
+          <ReviewList reviews={data.productReviews} />
         </div>
       )}
       {active === 3 && (
@@ -64,7 +66,10 @@ const ProductDetailInfo = ({ data }) => {
               <div className="ml-2">
                 <h3 className={`${styles.shop_name} pb-1`}>{data.shop.name}</h3>
                 <h5 className="pb-1 text-[15px]">
-                  {data.shop.ratings} Ratings
+                  <RatingWithFeedback
+                    value={data.shop.avgRating}
+                    disabled={true}
+                  />
                 </h5>
               </div>
             </div>
@@ -81,10 +86,11 @@ const ProductDetailInfo = ({ data }) => {
               </h5>
               <h5 className="font-[600] pt-2">
                 Total Products:{" "}
-                <span className="font-[400]">{data.shop.totalProduct}</span>
+                <span className="font-[400]">{data.shop.totalProducts}</span>
               </h5>
               <h5 className="font-[600] pt-2">
-                Total Reviews: <span className="font-[400]">0</span>
+                Total Reviews:{" "}
+                <span className="font-[400]">{data.shop.totalReviews}</span>
               </h5>
               <Link
                 to={`/shops/${data.shop._id}`}

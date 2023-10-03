@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -27,6 +27,8 @@ import { loadEventsByShop } from "./redux/actions/eventActions";
 import { loadCouponsByShop } from "./redux/actions/couponActions";
 import { loadCartitems } from "./redux/actions/cartActions";
 import { loadWishlistItems } from "./redux/actions/wishlistActions";
+import { OrderDetailPage } from "./pagesCollections/userPagesCollection";
+import { OrderDetailProtect } from "./ProtectedRoutes";
 
 const App = () => {
   const { loading, user } = useSelector((state) => state.user);
@@ -52,12 +54,20 @@ const App = () => {
     }
   }, [user]);
 
+  const location = useLocation();
+  useEffect(() => {
+    if (!location.pathname.startsWith("/users/checkout")) {
+      sessionStorage.removeItem("appliedCoupon");
+      sessionStorage.removeItem("shippingAddress");
+    }
+  }, [location]);
+
   return (
     <>
       {loading || shopLoading ? (
         <Loader />
       ) : (
-        <BrowserRouter>
+        <>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
@@ -67,6 +77,14 @@ const App = () => {
             <Route path="/faq" element={<FAQPage />} />
             <Route path="/users/*" element={<UserRoutes />} />
             <Route path="/shops/*" element={<ShopRoutes />} />
+            <Route
+              path="/orders/:orderId"
+              element={
+                <OrderDetailProtect>
+                  <OrderDetailPage />
+                </OrderDetailProtect>
+              }
+            />
           </Routes>
 
           <ToastContainer
@@ -81,7 +99,7 @@ const App = () => {
             pauseOnHover
             theme="dark"
           />
-        </BrowserRouter>
+        </>
       )}
     </>
   );

@@ -84,11 +84,9 @@ const ShopProducts = () => {
         type: "number",
         sortable: false,
         renderCell: (params) => {
-          const d = params.row.name;
-          const product_name = d.replace(/\s+/g, "-");
           return (
             <Link
-              to={`/products/${product_name}`}
+              to={`/products/${params.value}`}
               className="block w-full h-full"
             >
               <Button sx={{ width: "100%", height: "100%" }}>
@@ -128,6 +126,7 @@ const ShopProducts = () => {
       price: product.discountPrice,
       stock: product.stock,
       sold: product.sold_out,
+      preview: product.slug,
     })
   );
 

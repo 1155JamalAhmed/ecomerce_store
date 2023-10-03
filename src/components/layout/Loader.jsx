@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 const Loader = ({ className }) => {
   const defaultOptions = {
-    loop: false,
+    loop: true,
     autoplay: true,
     animationData: MainLoader,
     renderSettings: {

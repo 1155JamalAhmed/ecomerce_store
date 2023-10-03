@@ -5,7 +5,6 @@ import { Route, Routes } from "react-router-dom";
 
 import {
   ShopDashboard,
-  ShopRefunds,
   ShopDiscountCodes,
   ShopInbox,
   ShopWithDrawMoney,
@@ -19,6 +18,7 @@ import {
   ShopActivationPage,
   LoginShopPage,
   ShopCreateEvent,
+  ShopDashboardMain,
 } from "../pagesCollections/shopPagesCollection";
 
 const ShopRoutes = () => {
@@ -41,6 +41,7 @@ const ShopRoutes = () => {
           </ProtectedRoutes>
         }
       >
+        <Route path="" element={<ShopDashboardMain />} />
         <Route path="products" element={<ShopProducts />} />
         <Route path="orders" element={<ShopOrders />} />
         <Route path="create-product" element={<ShopCreateProduct />} />
@@ -49,7 +50,6 @@ const ShopRoutes = () => {
         <Route path="withdraw-money" element={<ShopWithDrawMoney />} />
         <Route path="inbox" element={<ShopInbox />} />
         <Route path="coupon-codes" element={<ShopDiscountCodes />} />
-        <Route path="refunds" element={<ShopRefunds />} />
         <Route path="settings" element={<ShopSettings />} />
       </Route>
     </Routes>

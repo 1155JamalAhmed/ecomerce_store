@@ -15,16 +15,30 @@ const ShopHomePage = () => {
   const [shopIsLoading, setShopIsLoading] = useState(true);
   const [shopHasError, setShopHasError] = useState(null);
 
+  const [reviews, setReviews] = useState([]);
+  const [reviewsHasError, setReviewsHasError] = useState(null);
+  const [reviewsIsLoading, setReviewsIsLoading] = useState(true);
+
+  useEffect(() => {
+    axiosInstance
+      .get(`/reviews/get-reviews-by-shop/${shopId}`)
+      .then((res) => setReviews(res?.data?.body))
+      .catch((err) => setReviewsHasError(err?.response?.data?.message))
+      .finally(() => {
+        setReviewsIsLoading(false);
+      });
+  }, [shopId]);
+
   const isOwner = shopId === authShop?._id;
 
   useEffect(() => {
     axiosInstance
       .get(`/shops/get-shop-by-id/${shopId}`)
       .then((res) => {
-        setShop(res.data.body);
+        setShop(res?.data.body);
       })
       .catch((err) => {
-        setShopHasError(err.response.data.message);
+        setShopHasError(err?.response?.data?.message);
       })
       .finally(() => {
         setShopIsLoading(false);
@@ -34,16 +48,23 @@ const ShopHomePage = () => {
   return (
     <div className={`${styles.section} bg-[#f5f5f5] `}>
       {shopIsLoading && <Loader />}
-      {shop && !shopIsLoading && (
-        <div className="w-full flex py-10 justify-between">
-          <div className="w-[25%] bg-[#fff] rounded-[4px] shadow-sm overflow-y-auto h-[90vh] sticky top-2 left-0 z-10">
-            <ShopInfo isOwner={isOwner} shop={shop.shop} />
+      {shop && (
+        <div className="flex-col 580px:flex-row w-full flex py-10 justify-between">
+          <div className="order-1 580px:order-[0] w-full 580px:w-[25%] 580px:min-w-[220px] bg-[#fff] rounded-[4px] shadow-sm overflow-y-auto 580px:h-[90vh] 580px:sticky 580px:top-2 580px:left-0 z-10">
+            <ShopInfo
+              isOwner={isOwner}
+              shop={shop?.shop}
+              totalProducts={shop?.products?.length}
+            />
           </div>
-          <div className="w-[72%] rounded-[4px] ">
+          <div className="flex-1 rounded-[4px] 580px:ml-10">
             <ShopProfileData
               isOwner={isOwner}
-              products={shop.products}
-              events={shop.events}
+              products={shop?.products}
+              events={shop?.events}
+              reviews={reviews}
+              reviewsHasError={reviewsHasError}
+              reviewsIsLoading={reviewsIsLoading}
             />
           </div>
         </div>

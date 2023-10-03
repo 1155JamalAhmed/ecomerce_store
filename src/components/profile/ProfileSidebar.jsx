@@ -1,7 +1,7 @@
 import React from "react";
 import { AiOutlineLogin, AiOutlineMessage } from "react-icons/ai";
-import { HiOutlineReceiptRefund, HiOutlineShoppingBag } from "react-icons/hi";
-import { MdOutlineTrackChanges, MdSecurity } from "react-icons/md";
+import { HiOutlineShoppingBag } from "react-icons/hi";
+import { MdSecurity } from "react-icons/md";
 import { TbAddressBook } from "react-icons/tb";
 import { RxPerson } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
@@ -18,16 +18,8 @@ const tabs = [
     text: "Order",
   },
   {
-    icon: HiOutlineReceiptRefund,
-    text: "Refund",
-  },
-  {
     icon: AiOutlineMessage,
     text: "Inbox",
-  },
-  {
-    icon: MdOutlineTrackChanges,
-    text: "Track Order",
   },
   {
     icon: MdSecurity,
@@ -59,7 +51,6 @@ const ProfileSidebar = ({ active, setActive }) => {
           className="flex items-center cursor-pointer w-full mb-8"
           onClick={() => {
             setActive(index + 1);
-            tab.text === "Inbox" && navigate("/");
             tab.text === "Logout" && logoutUserHandler();
           }}
         >

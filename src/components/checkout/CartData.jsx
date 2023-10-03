@@ -30,7 +30,7 @@ const CartData = () => {
       .then((res) => {
         setDiscountDetail(res.data.body);
         setGrandTotal(subtotal + shippingCost - res.data.body.totalDiscount);
-        setCouponCode("");
+        sessionStorage.setItem("appliedCoupon", couponCode);
       })
       .catch((err) => {
         toast.error(err.response.data.message);

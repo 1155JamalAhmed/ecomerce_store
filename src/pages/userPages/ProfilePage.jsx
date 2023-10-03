@@ -13,7 +13,9 @@ const ProfilePage = () => {
         <div className="800px:w-[335px] min-w-[56px] h-[80vh] overflow-y-scroll [&::-webkit-scrollbar]:hidden sticky top-[5.4rem]">
           <ProfileSidebar active={active} setActive={setActive} />
         </div>
-        <ProfileContent active={active} />
+        <div className="w-full overflow-hidden">
+          <ProfileContent active={active} />
+        </div>
       </div>
     </div>
   );

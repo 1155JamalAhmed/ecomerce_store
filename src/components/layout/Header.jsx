@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { useMediaQuery } from "react-responsive";
 
@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const { isShopAuthenticated } = useSelector((state) => state.shop);
+  const navigate = useNavigate();
 
   const desktopView = useMediaQuery({
     query: `(min-width: 800px)`,
@@ -44,12 +45,13 @@ const Header = () => {
                 variant="contained"
                 size="large"
                 color="tertiary"
+                onClick={() => {
+                  isShopAuthenticated
+                    ? navigate("/shops/dashboard")
+                    : navigate("/shops/create-shop");
+                }}
               >
-                {isShopAuthenticated ? (
-                  <Link to={`/shops/dashboard`}>Shop Dashboard</Link>
-                ) : (
-                  <Link to="/shops/create-shop">Create Shop</Link>
-                )}
+                {`${isShopAuthenticated ? "Shop Dashboard" : "Create Shop"}`}
               </Button>
             </div>
           </div>

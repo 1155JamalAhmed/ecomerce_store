@@ -1,22 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
-import Checkout from "../../components/checkout/Checkout";
-import Payment from "../../components/checkout/Payment.jsx";
 import CheckoutSteps from "../../components/checkout/CheckoutSteps";
+import { Outlet } from "react-router-dom";
+import CartData from "../../components/checkout/CartData";
 
 const CheckoutPage = () => {
-  const [active, setActive] = useState(1);
   return (
     <div>
       <Header />
       <br />
       <br />
-      <CheckoutSteps active={active} />
-      {active === 1 && <Checkout setActive={setActive} />}
-      {active === 2 && <Payment setActive={setActive} />}
-      <br />
-      <br />
+      <CheckoutSteps />
+
+      <div className="w-full flex flex-col items-center py-8">
+        <div className="w-[90%] 100px:w-[70%] block 800px:flex flex-wrap">
+          <div className="w-full 800px:w-[65%]">
+            <Outlet />
+          </div>
+          <div className="w-full 800px:w-[35%] 800px:mt-0 mt-8">
+            <CartData />
+          </div>
+        </div>
+      </div>
       <Footer />
     </div>
   );
