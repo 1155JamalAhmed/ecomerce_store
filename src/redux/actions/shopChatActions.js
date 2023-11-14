@@ -11,7 +11,7 @@ export const loadShopChats = () => async (dispatch) => {
     });
   } catch (err) {
     dispatch({
-      type: "LoadShopError",
+      type: "LoadShopChatError",
       payload: err.response.data.message,
     });
   }
@@ -19,7 +19,24 @@ export const loadShopChats = () => async (dispatch) => {
 
 export const selectedShopChatHandler = (selectedChat) => async (dispatch) => {
   dispatch({
-    type: "ChangeSelectedChat",
+    type: "ChangeSelectedShopChat",
     payload: selectedChat,
   });
+};
+
+export const getShopMessagesForChat = (chatId) => async (dispatch) => {
+  try {
+    const res = await axiosInstance.get(
+      `/messages/get-messages-by-shop/${chatId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch({
+      type: "LoadMessagesForShopChat",
+      payload: res.data.body,
+    });
+  } catch (err) {
+    throw err;
+  }
 };

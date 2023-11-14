@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import axiosInstance from "../../utils/axiosInstance";
+import { socketForUser } from "../../utils/socketIO";
 
 export const loadUser = () => async (dispatch) => {
   try {
@@ -10,6 +11,7 @@ export const loadUser = () => async (dispatch) => {
       type: "LoadUserSuccess",
       payload: res.data.body,
     });
+    socketForUser.emit("setup user", res.data.body);
   } catch (err) {
     dispatch({
       type: "LoadUserFail",

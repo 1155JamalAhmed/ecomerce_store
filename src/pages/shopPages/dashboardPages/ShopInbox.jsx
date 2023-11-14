@@ -5,10 +5,10 @@ import store from "../../../redux/store";
 import { loadShopChats } from "../../../redux/actions/shopChatActions";
 import { useSelector } from "react-redux";
 import styles from "../../../styles/styles";
-// import { ntfSocket, socket } from "../../../utils/socketIO";
+import Loader from "../../../components/layout/Loader";
 
 const ShopInbox = () => {
-  const { isShopChatsLoading, shopChatsHasError } = useSelector(
+  const { isShopChatsLoading, shopChatsHasError, shopChats } = useSelector(
     (state) => state.shopChats
   );
 
@@ -16,42 +16,22 @@ const ShopInbox = () => {
     store.dispatch(loadShopChats());
   }, []);
 
-  // useEffect(() => {
-  //   const broadCastingHandler = (data, cb) => {
-  //     console.log("totalUserconnected" + data);
-  //   };
-  //   socket.on("broadcastTotalUser", broadCastingHandler);
-
-  //   return () => socket.off("broadcastTotalUser", broadCastingHandler);
-  // }, []);
-
-  // useEffect(() => {
-  //   const messageHandler = (data, cb) => {
-  //     console.log("data", data);
-  //     cb({
-  //       ack: true,
-  //     });
-  //   };
-  //   socket.on("message", messageHandler);
-  //   ntfSocket.on("orderDelivered", (data) => console.log("data", data));
-
-  //   return () => {
-  //     socket.off("message");
-  //   };
-  // }, []);
-
   return (
-    <div className="grid grid-cols-[240px,1fr]">
-      {!isShopChatsLoading && (
-        <>
+    <>
+      {!isShopChatsLoading && shopChats && (
+        <div className="grid grid-cols-[240px,1fr]">
           <ChatSidebar />
           <ChatMainScreen />
-        </>
+        </div>
       )}
-      {shopChatsHasError && (
-        <h1 className={`${styles.error}`}>{shopChatsHasError}</h1>
+
+      {!isShopChatsLoading && shopChatsHasError && (
+        <div className="h-[60vh] flex justify-center items-center">
+          <h1 className={`${styles.error}`}>{shopChatsHasError}</h1>
+        </div>
       )}
-    </div>
+      {isShopChatsLoading && <Loader className="!h-full" />}
+    </>
   );
 };
 

@@ -6,16 +6,16 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import { socketForUser } from "../../utils/socketIO";
 import { useSelector } from "react-redux";
-import { socketForShop } from "../../utils/socketIO";
 import store from "../../redux/store";
 
 const actions = [{ icon: <AddPhotoAlternateIcon />, name: "Select Image" }];
 
-const WholeMessageField = () => {
+const UserWholeMessageField = () => {
   const [message, setMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const { selectedShopChat } = useSelector((state) => state.shopChats);
+  const { selectedUserChat } = useSelector((state) => state.userChats);
 
   const handleInputChange = (e) => {
     const input = e.target;
@@ -25,20 +25,19 @@ const WholeMessageField = () => {
   };
 
   const messageSendHandler = () => {
-    socketForShop.emit(
+    socketForUser.emit(
       "new message",
       {
         content: message,
-        chat: selectedShopChat._id,
-        senderType: "Shop",
-        sender: selectedShopChat.shop,
+        chat: selectedUserChat._id,
+        senderType: "User",
+        sender: selectedUserChat.user,
       },
       (savedMessage) => {
         store.dispatch({
-          type: "AddNewMessageToShopChatMessages",
+          type: "AddNewMessageToChatMessages",
           payload: savedMessage,
         });
-        console.log(savedMessage);
       }
     );
 
@@ -112,4 +111,4 @@ const WholeMessageField = () => {
   );
 };
 
-export default WholeMessageField;
+export default UserWholeMessageField;

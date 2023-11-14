@@ -18,7 +18,7 @@ export const loadUserChats = () => async (dispatch) => {
 };
 export const getUserMessagesForChat = (chatId) => async (dispatch) => {
   try {
-    const res = await axiosInstance.get(`/messages/get-messages/${chatId}`, {
+    const res = await axiosInstance.get(`/messages/get-messages-by-user/${chatId}`, {
       withCredentials: true,
     });
     dispatch({

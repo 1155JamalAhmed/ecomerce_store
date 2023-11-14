@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { backend_url } from "../../server";
 import RecieverMessage from "./RecieverMessage";
 import SenderMessage from "./SenderMessage";
-import WholeMessageField from "./WholeMessageField";
+import UserWholeMessageField from "./UserWholeMessageField";
 import { useEffect, useState } from "react";
 import store from "../../redux/store";
 import { getUserMessagesForChat } from "../../redux/actions/userChatActions";
@@ -75,7 +75,7 @@ const UserChatMainScreen = () => {
                   </div>
                 ))}
               </div>
-              <WholeMessageField />
+              <UserWholeMessageField />
             </>
           )}
         </>

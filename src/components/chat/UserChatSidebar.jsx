@@ -2,6 +2,7 @@ import React from "react";
 import { backend_url } from "../../server";
 import { useSelector } from "react-redux";
 import store from "../../redux/store";
+import { socketForUser } from "../../utils/socketIO";
 
 const UserChatSidebar = () => {
   const { userChats, selectedUserChat } = useSelector(
@@ -13,6 +14,7 @@ const UserChatSidebar = () => {
       type: "ChangeSelectedUserChat",
       payload: chat,
     });
+    socketForUser.emit("join chat", chat._id);
   };
 
   return (

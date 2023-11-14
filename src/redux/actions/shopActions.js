@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import axiosInstance from "../../utils/axiosInstance";
+import { socketForShop } from "../../utils/socketIO";
 
 export const loadShop = () => async (dispatch) => {
   try {
@@ -10,6 +11,7 @@ export const loadShop = () => async (dispatch) => {
       type: "LoadShopSuccess",
       payload: res.data.body,
     });
+    socketForShop.emit("setup shop", res.data.body);
   } catch (err) {
     dispatch({
       type: "LoadShopFail",
